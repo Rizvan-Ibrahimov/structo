@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 140" fill="none">
+  <!-- Left Accent Structural Column -->
+  <rect x="0" y="4" width="8" height="66" rx="1" fill="#EA3829" />
+  <rect x="0" y="70" width="8" height="66" rx="1" fill="#94A3B8" />
+  
+  <!-- "Structo" Wordmark -->
+  <text x="24" y="68" fill="#FFFFFF" font-family="'Montserrat', 'Outfit', sans-serif" font-weight="900" font-size="70" letter-spacing="-1.5">Structo</text>
+  
+  <!-- Subtitle "Built on Quality" -->
+  <text x="26" y="118" fill="#EA3829" font-family="'Outfit', 'Montserrat', sans-serif" font-weight="600" font-size="28" letter-spacing="1.2">Built on Quality</text>
+</svg>
