@@ -1,0 +1,6 @@
+{
+  "name": "Structo Real Estate & Structural Engineering",
+  "description": "Premier real estate investment, construction, and structural engineering platform in Azerbaijan with bilingual support, interactive ROI calculator, and project catalog.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

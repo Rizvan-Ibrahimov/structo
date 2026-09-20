@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="az" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Structo | Built on Quality — Real Estate Investment, Construction & Structural Engineering</title>
+  <meta name="description" content="Structo — Azərbaycanda premium daşınmaz əmlak investisiyaları, monolit tikinti və AZDTN standartlı mühəndislik platforması. Built on Quality." />
+  <meta property="og:title" content="Structo | Built on Quality" />
+  <meta property="og:description" content="Azərbaycanda strateji tikinti və investisiya tərəfdaşı." />
+  <link rel="icon" type="image/svg+xml" href="/structo-logo.svg" />
+  
+  <!-- Fonts with 100% Azerbaijani character support (ə, ğ, ö, ı, ş, ç) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&family=Outfit:wght@300;400;500;600;700;800;900&display=swap&subset=latin,latin-ext" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#090D16',
+            slateDark: '#0F172A',
+            cardBg: '#131B2E',
+            cardBorder: '#1E293B',
+            structo: {
+              50: '#FEF2F2',
+              100: '#FEE2E2',
+              200: '#FECACA',
+              300: '#FCA5A5',
+              400: '#F87171',
+              500: '#EA3829', // Structo Logo Signature Crimson Red
+              600: '#DC2626',
+              700: '#B91C1C',
+              800: '#991B1B',
+              900: '#7F1D1D',
+            },
+            steel: '#94A3B8',
+          },
+          fontFamily: {
+            sans: ['"Outfit"', '"Montserrat"', 'sans-serif'],
+            display: ['"Montserrat"', '"Outfit"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #090D16;
+      color: #F8FAFC;
+      font-family: 'Outfit', 'Montserrat', sans-serif;
+      overflow-x: hidden;
+    }
+    
+    /* Structo Red Glow and Gradient */
+    .structo-gradient-text {
+      background: linear-gradient(135deg, #FFFFFF 0%, #FEE2E2 50%, #EA3829 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .structo-red-gradient {
+      background: linear-gradient(135deg, #EA3829 0%, #C5221F 100%);
+    }
+    .glass-nav {
+      background: rgba(9, 13, 22, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(234, 56, 41, 0.2);
+    }
+    .glass-card {
+      background: rgba(19, 27, 46, 0.75);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-card:hover {
+      border-color: rgba(234, 56, 41, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 36px -12px rgba(234, 56, 41, 0.15);
+    }
+    input[type=range] {
+      accent-color: #EA3829;
+    }
+    
+    /* Interactive blueprint grid */
+    .blueprint-grid {
+      background-size: 24px 24px;
+      background-image: 
+        linear-gradient(to right, rgba(234, 56, 41, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(234, 56, 41, 0.06) 1px, transparent 1px);
+    }
+    
+    /* Pulse badge */
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.15); opacity: 0.3; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+    .pulse-ring {
+      animation: pulse-ring 2.5s infinite;
+    }
+  </style>
+</head>
+<body class="bg-obsidian text-slate-100 min-h-screen selection:bg-structo-500 selection:text-white">
+
+  <!-- APP SHELL CONTAINER -->
+  <div id="structo-app" class="relative">
+    <!-- Navigation Bar -->
+    <header id="nav-container"></header>
+
+    <!-- Main Content -->
+    <main>
+      <!-- Hero Section -->
+      <section id="hero-section"></section>
+
+      <!-- Extraordinary Interactive Construction & Structural Anatomy Simulator -->
+      <section id="interactive-construction-section"></section>
+
+      <!-- Metric Stats Counters -->
+      <section id="stats-section"></section>
+
+      <!-- ROI Calculator Section -->
+      <section id="calculator-section"></section>
+
+      <!-- Opportunities Catalog -->
+      <section id="catalog-section"></section>
+
+      <!-- Core Business Divisions -->
+      <section id="divisions-section"></section>
+
+      <!-- Legal & AZDTN Standards -->
+      <section id="standards-section"></section>
+
+      <!-- Strategic & Institutional Partners -->
+      <section id="partners-section"></section>
+
+      <!-- Investor Consultation Form -->
+      <section id="contact-section"></section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer-container"></footer>
+
+    <!-- Modals (Details Modal, Admin Modal, Toast) -->
+    <div id="modal-container"></div>
+  </div>
+
+  <!-- Single Master Script as ES Module -->
+  <script type="module" src="/src/app.js"></script>
+</body>
+</html>
