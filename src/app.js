@@ -1,3 +1,4 @@
+import { supabase } from './supabase';
 // Structo Web Application Engine
 // Premier Real Estate Investment, Construction & Structural Engineering Platform
 
