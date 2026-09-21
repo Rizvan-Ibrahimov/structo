@@ -2677,7 +2677,9 @@ saveHeadlinesBtn.addEventListener('click', async () => {
       try {
         const { error } = await supabase
           .from('site_content')
-          .upsert([{ id: 1, content: state.siteContent }]);
+          .upsert([
+            { key: 'hero_content', value: JSON.stringify(state.siteContent) }
+          ], { onConflict: 'key' });
 
         if (error) console.error('Supabase xətası:', error.message);
       } catch (err) {
