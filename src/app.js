@@ -5,6 +5,47 @@ import { supabase } from './supabase';
 import { translations, defaultProjects, divisionsData, standardsData, defaultContactConfig, defaultPartners, defaultPartnersConfig, defaultDivisionsConfig } from './data.js';
 import { ConstructionSimulator } from './components/simulator.js';
 
+async function loadSiteContent() {
+  try {
+    const { data, error } = await supabase
+      .from('site_content')
+      .select('key, value');
+
+    if (error) {
+      console.error('Supabase-dən məlumat oxunarkən xəta:', error.message);
+      return;
+    }
+
+    if (data && data.length > 0) {
+      data.forEach(item => {
+        let parsedValue = item.value;
+        if (typeof item.value === 'string') {
+          try { 
+            parsedValue = JSON.parse(item.value); 
+          } catch (e) {}
+        }
+
+        if (item.key === 'divisions_config' && parsedValue) {
+          state.divisions = parsedValue;
+        }
+        if (item.key === 'contact_config' && parsedValue) {
+          state.contactConfig = parsedValue;
+        }
+        if (item.key === 'projects_config' && parsedValue) {
+          state.projects = parsedValue;
+        }
+      });
+
+      if (typeof renderDivisions === 'function') renderDivisions();
+      if (typeof renderContact === 'function') renderContact();
+      if (typeof renderFooter === 'function') renderFooter();
+      if (typeof renderCatalog === 'function') renderCatalog();
+    }
+  } catch (err) {
+    console.error('Yüklənmə xətası:', err);
+  }
+}
+
 // Application State
 const state = {
   lang: localStorage.getItem('structo_lang') || 'az',
@@ -3250,8 +3291,13 @@ function renderAll() {
 }
 
 // Launch on script load
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', renderAll);
-} else {
+async function initApp() {
+  await loadSiteContent();
   renderAll();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
 }
