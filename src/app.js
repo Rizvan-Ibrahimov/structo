@@ -2696,18 +2696,32 @@ function renderModal() {
     // Reset Headlines
     const resetHeadlinesBtn = container.querySelector('#adm-reset-headlines-btn');
     if (resetHeadlinesBtn) {
-      resetHeadlinesBtn.addEventListener('click', () => {
+      resetHeadlinesBtn.addEventListener('click', async () => {
         state.siteContent = null;
         localStorage.removeItem('structo_site_content');
+
+        try {
+          const { error } = await supabase
+            .from('site_content')
+            .upsert([
+              { key: 'hero_content', value: null }
+            ], { onConflict: 'key' });
+
+          if (error) console.error('Supabase xətası:', error.message);
+        } catch (err) {
+          console.error('Əlaqə xətası:', err);
+        }
+
         renderHero();
         renderModal();
+        alert('Ana səhifə mətnləri ilkin vəziyyətinə qaytarıldı!');
       });
     }
-
+    
     // Save Stats
     const saveStatsBtn = container.querySelector('#adm-save-stats-btn');
     if (saveStatsBtn) {
-      saveStatsBtn.addEventListener('click', () => {
+      saveStatsBtn.addEventListener('click', async () => {
         state.statsConfig = {
           stat1Val: container.querySelector('#adm-stat1-val').value,
           stat1Label: container.querySelector('#adm-stat1-label').value,
@@ -2718,12 +2732,26 @@ function renderModal() {
           stat4Val: container.querySelector('#adm-stat4-val').value,
           stat4Label: container.querySelector('#adm-stat4-label').value,
         };
+
         localStorage.setItem('structo_stats_config', JSON.stringify(state.statsConfig));
+
+        try {
+          const { error } = await supabase
+            .from('site_content')
+            .upsert([
+              { key: 'stats_config', value: JSON.stringify(state.statsConfig) }
+            ], { onConflict: 'key' });
+
+          if (error) console.error('Supabase xətası:', error.message);
+        } catch (err) {
+          console.error('Əlaqə xətası:', err);
+        }
+
         renderStats();
         alert('Statistikalar yeniləndi!');
       });
     }
-
+    
     // Save Finance & Fee
     const saveFinanceBtn = container.querySelector('#adm-save-finance-btn');
     if (saveFinanceBtn) {
