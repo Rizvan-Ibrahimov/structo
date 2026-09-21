@@ -2755,11 +2755,26 @@ function renderModal() {
     // Save Finance & Fee
     const saveFinanceBtn = container.querySelector('#adm-save-finance-btn');
     if (saveFinanceBtn) {
-      saveFinanceBtn.addEventListener('click', () => {
+      saveFinanceBtn.addEventListener('click', async () => {
         const fee = Number(container.querySelector('#adm-fee-percent').value);
         const kat = Number(container.querySelector('#adm-katlavan-percent').value);
+
         state.financeConfig = { structoFeePercent: fee, katlavanInitialPercent: kat };
+
         localStorage.setItem('structo_finance_config', JSON.stringify(state.financeConfig));
+
+        try {
+          const { error } = await supabase
+            .from('site_content')
+            .upsert([
+              { key: 'finance_config', value: JSON.stringify(state.financeConfig) }
+            ], { onConflict: 'key' });
+
+          if (error) console.error('Supabase xətası:', error.message);
+        } catch (err) {
+          console.error('Əlaqə xətası:', err);
+        }
+
         renderCalculator();
         alert('Maliyyə parametrləri və xidmət haqqı modeli yeniləndi!');
       });
@@ -2768,7 +2783,7 @@ function renderModal() {
     // Save Contact & Footer
     const saveContactBtn = container.querySelector('#adm-save-contact-btn');
     if (saveContactBtn) {
-      saveContactBtn.addEventListener('click', () => {
+      saveContactBtn.addEventListener('click', async () => {
         const rawWa = container.querySelector('#adm-contact-whatsapp').value.trim();
         const cleanWa = rawWa.replace(/\+/g, '').replace(/\s+/g, '').replace(/-/g, '');
 
@@ -2789,21 +2804,48 @@ function renderModal() {
         };
 
         localStorage.setItem('structo_contact_config', JSON.stringify(state.contactConfig));
+
+        try {
+          const { error } = await supabase
+            .from('site_content')
+            .upsert([
+              { key: 'contact_config', value: JSON.stringify(state.contactConfig) }
+            ], { onConflict: 'key' });
+
+          if (error) console.error('Supabase xətası:', error.message);
+        } catch (err) {
+          console.error('Əlaqə xətası:', err);
+        }
+
         renderContact();
         renderFooter();
         alert('Əlaqə və footer məlumatları uğurla yeniləndi!');
       });
     }
-
+    
     // Reset Contact & Footer
     const resetContactBtn = container.querySelector('#adm-reset-contact-btn');
     if (resetContactBtn) {
-      resetContactBtn.addEventListener('click', () => {
+      resetContactBtn.addEventListener('click', async () => {
         state.contactConfig = { ...defaultContactConfig };
         localStorage.removeItem('structo_contact_config');
+
+        try {
+          const { error } = await supabase
+            .from('site_content')
+            .upsert([
+              { key: 'contact_config', value: null }
+            ], { onConflict: 'key' });
+
+          if (error) console.error('Supabase hatası:', error.message);
+        } catch (err) {
+          console.error('Bağlantı hatası:', err);
+        }
+
         renderContact();
         renderFooter();
         renderModal();
+        alert('İletişim ve footer bilgileri varsayılan ayarlara sıfırlandı!');
       });
     }
 
@@ -2873,15 +2915,29 @@ function renderModal() {
     // Delete Project
     const delBtns = container.querySelectorAll('.admin-del-project-btn');
     delBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', async () => {
         const idx = parseInt(btn.getAttribute('data-idx'), 10);
         state.projects.splice(idx, 1);
+
         localStorage.setItem('structo_projects', JSON.stringify(state.projects));
+
+        try {
+          const { error } = await supabase
+            .from('site_content')
+            .upsert([
+              { key: 'projects_config', value: JSON.stringify(state.projects) }
+            ], { onConflict: 'key' });
+
+          if (error) console.error('Supabase hatası:', error.message);
+        } catch (err) {
+          console.error('Bağlantı hatası:', err);
+        }
+
         renderCatalog();
         renderModal();
       });
     });
-
+    
     // --- PARTNERS EVENT LISTENERS ---
     // 1. Save Partner Headers
     const savePartnerHeadersBtn = container.querySelector('#adm-save-partner-headers-btn');
@@ -3090,7 +3146,7 @@ function renderModal() {
     // 4. Save Single Division Edits
     const saveSingleDivBtns = container.querySelectorAll('.adm-save-division-single-btn');
     saveSingleDivBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', async () => {
         const idx = parseInt(btn.getAttribute('data-idx'), 10);
         if (state.divisions && state.divisions[idx]) {
           const nameInput = container.querySelector(`.adm-div-name-az[data-idx="${idx}"]`);
@@ -3106,6 +3162,19 @@ function renderModal() {
           state.divisions[idx].icon = iconSelect ? iconSelect.value : state.divisions[idx].icon;
 
           localStorage.setItem('structo_divisions', JSON.stringify(state.divisions));
+
+          try {
+            const { error } = await supabase
+              .from('site_content')
+              .upsert([
+                { key: 'divisions_config', value: JSON.stringify(state.divisions) }
+              ], { onConflict: 'key' });
+
+            if (error) console.error('Supabase xətası:', error.message);
+          } catch (err) {
+            console.error('Əlaqə xətası:', err);
+          }
+
           renderDivisions();
           alert('Bölmə məlumatları uğurla yadda saxlanıldı!');
         }
