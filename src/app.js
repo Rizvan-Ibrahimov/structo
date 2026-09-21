@@ -2662,21 +2662,31 @@ function renderModal() {
     });
 
     // Save Headlines
-    const saveHeadlinesBtn = container.querySelector('#adm-save-headlines-btn');
-    if (saveHeadlinesBtn) {
-      saveHeadlinesBtn.addEventListener('click', () => {
-        const badge = container.querySelector('#adm-badge-az').value;
-        const title = container.querySelector('#adm-title-az').value;
-        const sub = container.querySelector('#adm-sub-az').value;
+saveHeadlinesBtn.addEventListener('click', async () => {
+      const badge = container.querySelector('#adm-badge-az').value;
+      const title = container.querySelector('#adm-title-az').value;
+      const sub = container.querySelector('#adm-sub-az').value;
 
-        state.siteContent = {
-          az: { heroBadge: badge, heroTitle: title, heroSubtitle: sub },
-          en: { heroBadge: translations.en.heroBadge, heroTitle: translations.en.heroTitle, heroSubtitle: translations.en.heroSubtitle }
-        };
-        localStorage.setItem('structo_site_content', JSON.stringify(state.siteContent));
-        renderHero();
-        alert('Ana səhifə mətnləri uğurla yeniləndi!');
-      });
+      state.siteContent = {
+        az: { heroBadge: badge, heroTitle: title, heroSubtitle: sub },
+        en: { heroBadge: translations.en.heroBadge, heroTitle: translations.en.heroTitle, heroSubtitle: translations.en.heroSubtitle }
+      };
+
+      localStorage.setItem('structo_site_content', JSON.stringify(state.siteContent));
+
+      try {
+        const { error } = await supabase
+          .from('site_content')
+          .upsert([{ id: 1, content: state.siteContent }]);
+
+        if (error) console.error('Supabase xətası:', error.message);
+      } catch (err) {
+        console.error('Əlaqə xətası:', err);
+      }
+
+      renderHero();
+      alert('Ana səhifə mətnləri uğurla yeniləndi!');
+    });
     }
 
     // Reset Headlines
