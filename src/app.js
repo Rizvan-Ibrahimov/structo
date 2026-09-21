@@ -2661,34 +2661,36 @@ function renderModal() {
       });
     });
 
-    // Save Headlines
-saveHeadlinesBtn.addEventListener('click', async () => {
-      const badge = container.querySelector('#adm-badge-az').value;
-      const title = container.querySelector('#adm-title-az').value;
-      const sub = container.querySelector('#adm-sub-az').value;
+// Save Headlines
+    const saveHeadlinesBtn = container.querySelector('#adm-save-headlines-btn');
+    if (saveHeadlinesBtn) {
+      saveHeadlinesBtn.addEventListener('click', async () => {
+        const badge = container.querySelector('#adm-badge-az').value;
+        const title = container.querySelector('#adm-title-az').value;
+        const sub = container.querySelector('#adm-sub-az').value;
 
-      state.siteContent = {
-        az: { heroBadge: badge, heroTitle: title, heroSubtitle: sub },
-        en: { heroBadge: translations.en.heroBadge, heroTitle: translations.en.heroTitle, heroSubtitle: translations.en.heroSubtitle }
-      };
+        state.siteContent = {
+          az: { heroBadge: badge, heroTitle: title, heroSubtitle: sub },
+          en: { heroBadge: translations.en.heroBadge, heroTitle: translations.en.heroTitle, heroSubtitle: translations.en.heroSubtitle }
+        };
 
-      localStorage.setItem('structo_site_content', JSON.stringify(state.siteContent));
+        localStorage.setItem('structo_site_content', JSON.stringify(state.siteContent));
 
-      try {
-        const { error } = await supabase
-          .from('site_content')
-          .upsert([
-            { key: 'hero_content', value: JSON.stringify(state.siteContent) }
-          ], { onConflict: 'key' });
+        try {
+          const { error } = await supabase
+            .from('site_content')
+            .upsert([
+              { key: 'hero_content', value: JSON.stringify(state.siteContent) }
+            ], { onConflict: 'key' });
 
-        if (error) console.error('Supabase xətası:', error.message);
-      } catch (err) {
-        console.error('Əlaqə xətası:', err);
-      }
+          if (error) console.error('Supabase xətası:', error.message);
+        } catch (err) {
+          console.error('Əlaqə xətası:', err);
+        }
 
-      renderHero();
-      alert('Ana səhifə mətnləri uğurla yeniləndi!');
-    });
+        renderHero();
+        alert('Ana səhifə mətnləri uğurla yeniləndi!');
+      });
     }
 
     // Reset Headlines
