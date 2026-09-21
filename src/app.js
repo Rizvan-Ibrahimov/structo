@@ -2661,7 +2661,7 @@ function renderModal() {
       });
     });
 
-// Save Headlines
+    // Save Headlines
     const saveHeadlinesBtn = container.querySelector('#adm-save-headlines-btn');
     if (saveHeadlinesBtn) {
       saveHeadlinesBtn.addEventListener('click', async () => {
