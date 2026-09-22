@@ -2948,7 +2948,7 @@ function renderModal() {
         };
 
         state.projects.unshift(newP);
-localStorage.setItem('structo_projects', JSON.stringify(state.projects));
+// localStorage.setItem('structo_projects', JSON.stringify(state.projects));
 
 // Supabase-ə sinxronlaşdırma
 try {
@@ -2981,7 +2981,7 @@ alert('Yeni layihə ikili şəkillərlə uğurla əlavə edildi!');
         const idx = parseInt(btn.getAttribute('data-idx'), 10);
         state.projects.splice(idx, 1);
 
-        localStorage.setItem('structo_projects', JSON.stringify(state.projects));
+        // localStorage.setItem('structo_projects', JSON.stringify(state.projects));
 
         try {
           const { error } = await supabase
