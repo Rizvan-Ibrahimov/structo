@@ -2948,29 +2948,10 @@ function renderModal() {
         };
 
         state.projects.unshift(newP);
-localStorage.setItem('structo_projects', JSON.stringify(state.projects));
-
-// Supabase-ə sinxronlaşdırma
-try {
-  const { error } = await supabase
-    .from('site_content')
-    .upsert(
-      { key: 'projects_config', value: state.projects },
-      { onConflict: 'key' }
-    );
-
-  if (error) {
-    console.error('Supabase layihələr yazılarkən xəta:', error.message);
-  } else {
-    console.log('Yeni layihə Supabase bazasına uğurla yazıldı');
-  }
-} catch (err) {
-  console.error('Supabase baglantı xətası:', err);
-}
-
-renderCatalog();
-renderModal();
-alert('Yeni layihə ikili şəkillərlə uğurla əlavə edildi!');
+        localStorage.setItem('structo_projects', JSON.stringify(state.projects));
+        renderCatalog();
+        renderModal();
+        alert('Yeni layihə ikili şəkillərlə uğurla əlavə edildi!');
       });
     }
 
