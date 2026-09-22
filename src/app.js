@@ -19,23 +19,32 @@ async function loadSiteContent() {
     if (data && data.length > 0) {
       data.forEach(item => {
         let parsedValue = item.value;
+
+        // Əgər Supabase-dən məlumat mətən (string) kimi gəlibsə, onu obyektə çeviririk
         if (typeof item.value === 'string') {
           try { 
             parsedValue = JSON.parse(item.value); 
-          } catch (e) {}
+          } catch (e) {
+            console.error(`${item.key} parse olunmadı:`, e);
+          }
         }
 
+        // Parse olunmuş məlumatı state-ə və localStorage-ə yazırıq
         if (item.key === 'divisions_config' && parsedValue) {
           state.divisions = parsedValue;
+          localStorage.setItem('structo_divisions', JSON.stringify(parsedValue));
         }
         if (item.key === 'contact_config' && parsedValue) {
           state.contactConfig = parsedValue;
+          localStorage.setItem('structo_contact_config', JSON.stringify(parsedValue));
         }
         if (item.key === 'projects_config' && parsedValue) {
           state.projects = parsedValue;
+          localStorage.setItem('structo_projects', JSON.stringify(parsedValue));
         }
       });
 
+      // Məlumatlar yükləndikdən sonra interfeysi yeniləyirik
       if (typeof renderDivisions === 'function') renderDivisions();
       if (typeof renderContact === 'function') renderContact();
       if (typeof renderFooter === 'function') renderFooter();
