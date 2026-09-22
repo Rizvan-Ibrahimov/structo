@@ -5,56 +5,6 @@ import { supabase } from './supabase';
 import { translations, defaultProjects, divisionsData, standardsData, defaultContactConfig, defaultPartners, defaultPartnersConfig, defaultDivisionsConfig } from './data.js';
 import { ConstructionSimulator } from './components/simulator.js';
 
-async function loadSiteContent() {
-  try {
-    const { data, error } = await supabase
-      .from('site_content')
-      .select('key, value');
-
-    if (error) {
-      console.error('Supabase-dən məlumat oxunarkən xəta:', error.message);
-      return;
-    }
-
-    if (data && data.length > 0) {
-      data.forEach(item => {
-        let parsedValue = item.value;
-
-        // Əgər Supabase-dən məlumat mətən (string) kimi gəlibsə, onu obyektə çeviririk
-        if (typeof item.value === 'string') {
-          try { 
-            parsedValue = JSON.parse(item.value); 
-          } catch (e) {
-            console.error(`${item.key} parse olunmadı:`, e);
-          }
-        }
-
-        // Parse olunmuş məlumatı state-ə və localStorage-ə yazırıq
-        if (item.key === 'divisions_config' && parsedValue) {
-          state.divisions = parsedValue;
-          localStorage.setItem('structo_divisions', JSON.stringify(parsedValue));
-        }
-        if (item.key === 'contact_config' && parsedValue) {
-          state.contactConfig = parsedValue;
-          localStorage.setItem('structo_contact_config', JSON.stringify(parsedValue));
-        }
-        if (item.key === 'projects_config' && parsedValue) {
-          state.projects = parsedValue;
-          localStorage.setItem('structo_projects', JSON.stringify(parsedValue));
-        }
-      });
-
-      // Məlumatlar yükləndikdən sonra interfeysi yeniləyirik
-      if (typeof renderDivisions === 'function') renderDivisions();
-      if (typeof renderContact === 'function') renderContact();
-      if (typeof renderFooter === 'function') renderFooter();
-      if (typeof renderCatalog === 'function') renderCatalog();
-    }
-  } catch (err) {
-    console.error('Yüklənmə xətası:', err);
-  }
-}
-
 // Application State
 const state = {
   lang: localStorage.getItem('structo_lang') || 'az',
@@ -114,6 +64,49 @@ const state = {
   // Direct mail inquiry sent modal
   inquirySentModal: null
 };
+
+async function loadSiteContent() {
+  try {
+    const { data, error } = await supabase
+      .from('site_content')
+      .select('key, value');
+
+    if (error) {
+      console.error('Supabase-dən məlumat oxunarkən xəta:', error.message);
+      return;
+    }
+
+    if (data && data.length > 0) {
+      data.forEach(item => {
+        let parsedValue = item.value;
+
+        if (typeof item.value === 'string') {
+          try { 
+            parsedValue = JSON.parse(item.value); 
+          } catch (e) {
+            console.error(`${item.key} parse olunmadı:`, e);
+          }
+        }
+
+        if (item.key === 'divisions_config' && parsedValue) {
+          state.divisions = parsedValue;
+          localStorage.setItem('structo_divisions', JSON.stringify(parsedValue));
+        }
+        if (item.key === 'contact_config' && parsedValue) {
+          state.contactConfig = parsedValue;
+          localStorage.setItem('structo_contact_config', JSON.stringify(parsedValue));
+        }
+        if (item.key === 'projects_config' && parsedValue) {
+          state.projects = parsedValue;
+          localStorage.setItem('structo_projects', JSON.stringify(parsedValue));
+        }
+      });
+      console.log('Supabase məlumatları state-ə uğurla yazıldı:', state);
+    }
+  } catch (err) {
+    console.error('Yüklənmə xətası:', err);
+  }
+}
 
 // Global helper to get translation
 function t(key) {
