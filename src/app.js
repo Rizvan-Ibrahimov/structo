@@ -2986,9 +2986,10 @@ alert('Yeni layihə ikili şəkillərlə uğurla əlavə edildi!');
         try {
           const { error } = await supabase
             .from('site_content')
-            .upsert([
-              { key: 'projects_config', value: JSON.stringify(state.projects) }
-            ], { onConflict: 'key' });
+            .upsert(
+              { key: 'projects_config', value: state.projects },
+              { onConflict: 'key' }
+              );
 
           if (error) console.error('Supabase hatası:', error.message);
         } catch (err) {
